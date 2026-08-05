@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Send {{ network.symbol }} — Nexus{% endblock %}
+{% block content %}
+<section class="page page-narrow">
+  <div class="topbar">
+    <a class="icon-btn" href="{{ url_for('network', network_id=network.id) }}" aria-label="Back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <h1>Send {{ network.symbol }}</h1>
+  </div>
+
+  <div class="panel">
+    <form method="post" action="{{ url_for('send', network_id=network.id) }}">
+      <div class="form-field">
+        <label>Recipient address</label>
+        <input name="address" required placeholder="Paste or enter address" value="0x5FaR...37hdc1" />
+      </div>
+      <div class="form-field">
+        <label>Amount</label>
+        <input name="amount" required inputmode="decimal" placeholder="0.00" value="0.032" />
+        <p class="muted small" style="margin:8px 0 0">
+          Available {{ "%.4f"|format(network.balance) }} {{ network.symbol }}
+        </p>
+      </div>
+      <button class="primary-btn full" type="submit">Next — sign with Keystone</button>
+      <p class="footer-note">You’ll confirm on your hardware wallet via QR</p>
+    </form>
+  </div>
+</section>
+{% endblock %}

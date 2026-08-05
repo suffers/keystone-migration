@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}You’re all set — Keystone{% endblock %}
+{% block content %}
+<section class="page page-narrow">
+  <div class="simple-flow center-copy done-final">
+    <img
+      class="hero-logo"
+      src="{{ url_for('static', filename='img/logo-mark.webp') }}"
+      alt="Keystone"
+      width="48"
+      height="48"
+    />
+    <div class="done-mark" aria-hidden="true">✓</div>
+    <h1 class="simple-title">You’re all set!</h1>
+    <p class="simple-sub" style="margin-left:auto;margin-right:auto">
+      You’re fully migrated and secure. Your new recovery phrase is the only backup
+      you need — keep it offline and never share it with anyone.
+    </p>
+
+    {% if show_compromised_banner %}
+    <aside class="compromised-banner" role="status">
+      <strong>Old phrase labeled compromised</strong>
+      <p>
+        That recovery phrase is marked unsafe. If it’s entered again later, we’ll
+        show a compromised warning before continuing.
+      </p>
+    </aside>
+    {% endif %}
+
+    {% if device %}
+    <p class="simple-help">{{ device.name }} · migration complete</p>
+    {% endif %}
+
+    <a class="primary-btn full mt-24" href="{{ url_for('select_device') }}">
+      Back to select device
+    </a>
+  </div>
+</section>
+{% endblock %}

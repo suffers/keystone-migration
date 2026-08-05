@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Enter your recovery phrase — Keystone{% endblock %}
+{% block content %}
+<section class="page page-narrow">
+  <div class="simple-flow">
+    <a class="back-link" href="{{ url_for('select_device') }}">← Back</a>
+
+    <p class="simple-progress">Step 1 of 3</p>
+    <h1 class="simple-title">Enter your recovery phrase</h1>
+    <p class="simple-sub">
+      Enter each word from your <strong>{{ device.name }}</strong> in order.
+      Press <strong>Enter</strong> or <strong>Space</strong> to jump to the next box.
+      You can also paste the full phrase into any box.
+    </p>
+
+    <aside class="compromised-banner is-soft" id="compromised-live" hidden role="status">
+      <strong>Compromised phrase</strong>
+      <p>This recovery phrase was already marked unsafe. Migrate away from it and don’t reuse it.</p>
+    </aside>
+
+    <form method="post" action="{{ url_for('migrate_import') }}" id="import-form" autocomplete="on">
+      <input type="hidden" name="strength" value="256" />
+      <input type="hidden" name="phrase" id="phrase" value="" />
+
+      <div class="length-toggle" role="group" aria-label="Phrase length">
+        <button type="button" class="length-btn is-active" data-length="12">12 words</button>
+        <button type="button" class="length-btn" data-length="24">24 words</button>
+      </div>
+
+      <div class="word-grid" id="word-grid" data-length="12">
+        {% for i in range(1, 25) %}
+        <label class="word-cell {% if i > 12 %}is-extra{% endif %}" data-index="{{ i }}">
+          <span class="word-num">#{{ i }}</span>
+          <input
+            type="text"
+            class="word-input"
+            name="word_{{ i }}"
+            id="word-{{ i }}"
+            data-index="{{ i }}"
+            inputmode="text"
+            enterkeyhint="next"
+            spellcheck="false"
+            autocapitalize="off"
+            autocorrect="off"
+            autocomplete="on"
+            {% if i > 12 %}tabindex="-1"{% endif %}
+          />
+        </label>
+        {% endfor %}
+      </div>
+
+      <div class="phrase-feedback" id="phrase-feedback">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="bip39-status">Fill each box with one word</span>
+        <span id="word-count" class="count">0 / 12</span>
+      </div>
+
+      {% if error %}
+      <div class="form-error" role="alert">{{ error }}</div>
+      {% endif %}
+
+      <button class="primary-btn full" type="submit" id="import-submit" disabled>
+        Continue
+      </button>
+
+      <p class="simple-help">
+        Tip: paste your full phrase into the first box to auto-fill the rest.
+      </p>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  NexusApp.initPhraseImport();
+</script>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Save your new phrase — Keystone{% endblock %}
+{% block content %}
+<section class="page page-narrow">
+  <div class="simple-flow">
+    <a class="back-link" href="{{ url_for('migrate_import') }}">← Back</a>
+
+    <p class="simple-progress">Step 2 of 3</p>
+    <h1 class="simple-title">Save your new phrase</h1>
+    <p class="simple-sub">
+      Write these <strong>{{ word_count }} words</strong> on paper and keep them offline.
+      This is your new wallet. You’ll need it if you ever lose your device.
+    </p>
+
+    {% if verified %}
+    <div class="ok-banner">✓ These words are valid and ready to use</div>
+    {% else %}
+    <div class="form-error" role="alert">Something went wrong creating your phrase. Go back and try again.</div>
+    {% endif %}
+
+    <ol class="seed-grid" aria-label="New recovery phrase">
+      {% for word in words %}
+      <li><span class="n">{{ loop.index }}</span>{{ word }}</li>
+      {% endfor %}
+    </ol>
+
+    <button class="soft-btn full" type="button" id="copy-seed" data-seed="{{ words|join(' ') }}">
+      Copy words
+    </button>
+
+    <form method="post" action="{{ url_for('migrate_new_phrase') }}" class="mt-24">
+      <label class="check-row {% if confirm_error %}is-error{% endif %}">
+        <input type="checkbox" name="confirm" value="1" required />
+        <span>I wrote these words down and stored them somewhere safe.</span>
+      </label>
+      {% if confirm_error %}
+      <div class="form-error" role="alert">Please confirm you saved your words before continuing.</div>
+      {% endif %}
+      <button class="primary-btn full" type="submit" {% if not verified %}disabled{% endif %}>
+        Finish migration
+      </button>
+      <p class="simple-help">Next you’ll see a confirmation that you’re fully migrated.</p>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  NexusApp.initSeedCopy();
+</script>
+{% endblock %}

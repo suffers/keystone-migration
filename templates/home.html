@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "macros.html" import coin, money, pct %}
+{% block title %}Portfolio — Keystone Nexus{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="dash-header">
+    <div class="balance-block">
+      <div class="label">
+        Total Balance
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div class="value">{{ money(wallet.total_balance) }}</div>
+      <p class="muted small" style="margin:8px 0 0">{{ wallet.name }} · review balances, then migrate to a new seed</p>
+    </div>
+
+    <div class="device-chip">
+      <img src="{{ url_for('static', filename=device.image) }}" alt="" />
+      <span>
+        {{ device.name }}
+        <small>{{ device.firmware }}</small>
+      </span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="section-title">Network</div>
+    <div class="network-grid">
+      {% for n in networks %}
+      <a class="network-card" href="{{ url_for('network', network_id=n.id) }}">
+        <div class="row">
+          {% if n.id == 'ethereum' %}
+          <div class="coin-stack">
+            {{ coin('E', n.color) }}
+            {{ coin('T', '#26A17B', 'sm') }}
+            {{ coin('U', '#2775CA', 'sm') }}
+          </div>
+          {% elif n.id in ['tron', 'bsc'] %}
+          <div class="coin-stack">
+            {{ coin(n.symbol, n.color) }}
+            {{ coin('U', '#26A17B', 'sm') }}
+          </div>
+          {% else %}
+          {{ coin(n.symbol, n.color) }}
+          {% endif %}
+          <span class="change {{ 'up' if n.change >= 0 else 'down' }}">{{ pct(n.change) }}</span>
+        </div>
+        <div>
+          <div class="name">{{ n.name }}</div>
+          <div class="price">{{ money(n.value) }}</div>
+          <div class="sub">
+            {% if n.balance < 100 %}{{ "%.4f"|format(n.balance) }}{% else %}{{ "{:,.0f}".format(n.balance) }}{% endif %}
+            {{ n.symbol }}
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

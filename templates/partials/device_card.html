@@ -1,0 +1,49 @@
+<label
+  class="device-card {% if d.generation == 'previous' %}device-card--previous{% endif %}"
+  style="--accent: {{ d.accent }}"
+  data-device="{{ d.id }}"
+>
+  <input type="radio" name="device_id" value="{{ d.id }}" />
+  <div class="device-card-top">
+    <span class="device-badge {{ d.badge_tone }}">{{ d.badge }}</span>
+    <span class="check-ring" aria-hidden="true">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+        <path d="M5 12l5 5L20 7" />
+      </svg>
+    </span>
+  </div>
+
+  <div class="device-visual">
+    {% if d.image %}
+    <img src="{{ url_for('static', filename=d.image) }}" alt="{{ d.name }}" />
+    {% else %}
+    <div class="legacy-device legacy-device--{{ d.shell }}" aria-hidden="true">
+      <div class="legacy-bezel">
+        <div class="legacy-screen">
+          <img
+            class="legacy-brand"
+            src="{{ url_for('static', filename='img/logo-mark.webp') }}"
+            alt=""
+            width="36"
+            height="36"
+          />
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="device-body">
+    <h3>{{ d.name }}</h3>
+    <p>{{ d.tagline }}</p>
+    <ul class="device-specs">
+      {% for spec in d.specs %}
+      <li>{{ spec }}</li>
+      {% endfor %}
+    </ul>
+    <div class="device-meta">
+      <span>{{ d.firmware }}</span>
+      <span class="device-status {% if d.generation == 'previous' %}device-status--assist{% endif %}">{{ d.status }}</span>
+    </div>
+  </div>
+</label>

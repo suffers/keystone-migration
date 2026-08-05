@@ -1,0 +1,11 @@
+{% macro coin(symbol, color, size='') %}
+<span class="coin {{ size }}" style="background: {{ color }}" title="{{ symbol }}">{{ symbol[:1] }}</span>
+{% endmacro %}
+
+{% macro money(value) -%}
+${{ "{:,.2f}".format(value) }}
+{%- endmacro %}
+
+{% macro pct(value) -%}
+{% if value >= 0 %}+{{ "%.1f"|format(value) }}%{% else %}{{ "%.1f"|format(value) }}%{% endif %}
+{%- endmacro %}

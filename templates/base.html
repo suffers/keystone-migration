@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{% block title %}Keystone Nexus{% endblock %}</title>
+    <link rel="icon" type="image/webp" href="{{ url_for('static', filename='img/logo-mark.webp') }}" />
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/logo-mark.webp') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nexus.css') }}" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="{{ url_for('select_device') }}">
+        <img
+          class="brand-logo"
+          src="{{ url_for('static', filename='img/logo.webp') }}"
+          alt="Keystone"
+          width="142"
+          height="32"
+        />
+        <span class="brand-word">Nexus</span>
+      </a>
+      <div class="header-actions">
+        <a class="header-link" href="{{ url_for('select_device') }}">Select device</a>
+        <span class="status-pill">PRNG migration</span>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/nexus.js') }}"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

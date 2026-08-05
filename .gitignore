@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next
+.next/
+out/
+build/
+
+# python (legacy local server)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# env / secrets
+.env
+.env*.local
+*.pem
+
+# compromised hash store (local only)
+data/
+
+# misc
+.DS_Store
+*.log
+.vercel

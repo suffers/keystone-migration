@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "macros.html" import coin, money, pct %}
+{% block title %}{{ network.name }} — Nexus{% endblock %}
+{% block content %}
+<section class="page page-narrow">
+  <div class="topbar">
+    <a class="icon-btn" href="{{ url_for('home') }}" aria-label="Back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <div class="pill-select">
+      {{ coin(network.symbol, network.color, 'sm') }}
+      {{ network.name }}
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="address-chip">
+      {{ network.address[:8] }}…{{ network.address[-6:] }}
+    </div>
+    <div class="balance-block">
+      <div class="value" style="font-size:40px">{{ money(network.value) }}</div>
+    </div>
+
+    <div class="action-row">
+      <a class="action-btn" href="{{ url_for('send', network_id=network.id) }}">↗ Send</a>
+      <a class="action-btn" href="{{ url_for('receive', network_id=network.id) }}">↘ Receive</a>
+    </div>
+
+    {% if network.tokens %}
+    <div class="section-title">Assets</div>
+    <div class="token-list">
+      {% for t in network.tokens %}
+      <div class="token-row">
+        {{ coin(t.symbol, t.color) }}
+        <div>
+          <div class="sym">{{ t.symbol }}</div>
+          <div class="price">{{ money(t.price) }} <span class="change {{ 'up' if t.change >= 0 else 'down' }}">{{ pct(t.change) }}</span></div>
+        </div>
+        <div class="right">
+          <div>{{ "%.2f"|format(t.balance) }} {{ t.symbol }}</div>
+          <div class="usd">{{ money(t.value) }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if network.history %}
+    <div class="section-title mt-24">History</div>
+    <div class="history-list">
+      {% for h in network.history %}
+      <div class="history-item">
+        <div class="badge">{% if h.type == 'send' %}↗{% elif h.type == 'receive' %}↘{% else %}⇄{% endif %}</div>
+        <div>
+          <div class="sym">{% if h.type == 'swap' %}{{ h.label }}{% else %}{{ h.type|capitalize }}{% endif %}</div>
+          <div class="sub">{% if h.type == 'swap' %}{{ h.sub }}{% elif h.type == 'send' %}{{ h.to }}{% else %}{{ h.from }}{% endif %}</div>
+        </div>
+        <div class="amt {{ 'pos' if h.positive else '' }}">{{ h.amount }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

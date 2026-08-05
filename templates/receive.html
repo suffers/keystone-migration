@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% from "macros.html" import coin %}
+{% block title %}Receive {{ network.symbol }} — Nexus{% endblock %}
+{% block content %}
+<section class="page page-narrow">
+  <div class="topbar">
+    <a class="icon-btn" href="{{ url_for('network', network_id=network.id) }}" aria-label="Back">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </a>
+    <h1>Receive {{ network.symbol }}</h1>
+  </div>
+
+  <div class="panel center-copy">
+    <div class="pair-icons">{{ coin(network.symbol, network.color) }}</div>
+    <h2>{{ network.name }}</h2>
+    <p>Only send {{ network.symbol }} assets on {{ network.name }} to this address.</p>
+    <div class="qr-panel"><div class="qr-fake" aria-hidden="true"></div></div>
+    <p style="word-break:break-all;font-weight:600;color:var(--fg)">{{ network.address }}</p>
+    <button class="soft-btn full" type="button" id="copy-address" data-address="{{ network.address }}">Copy address</button>
+  </div>
+</section>
+{% endblock %}

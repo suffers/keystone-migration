@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Migrate your wallet — Keystone Nexus{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="select-hero">
+    <img
+      class="hero-logo"
+      src="{{ url_for('static', filename='img/logo-mark.webp') }}"
+      alt="Keystone"
+      width="56"
+      height="56"
+    />
+    <p class="eyebrow">Security migration</p>
+    <h1 class="page-title">Select your device</h1>
+    <p class="page-sub" style="margin-left:auto;margin-right:auto">
+      A weakness was identified in the random number generation used when creating
+      some wallets. Choose your Keystone, enter your recovery phrase, and we’ll
+      issue a new BIP39-compliant seed and move your funds.
+    </p>
+  </div>
+
+  <aside class="alert-banner" role="status">
+    <div class="alert-icon" aria-hidden="true">!</div>
+    <div>
+      <strong>PRNG advisory</strong>
+      <p>
+        If your seed was created on an affected firmware build, migrate as soon as
+        possible. You’ll enter your current phrase, receive a new secure seed, then
+        we move balances automatically.
+      </p>
+    </div>
+  </aside>
+
+  <form method="post" action="{{ url_for('select_device') }}" id="device-form">
+    <div class="device-section">
+      <div class="device-section-head">
+        <h2>Current devices</h2>
+        <p>Keystone 3 Pro — select, then continue to phrase migration.</p>
+      </div>
+      <div class="device-grid" role="radiogroup" aria-label="Current Keystone devices">
+        {% for d in current_devices %}
+        {% include "partials/device_card.html" %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="device-section">
+      <div class="device-section-head">
+        <h2>Previous devices</h2>
+        <p>Older models — same phrase import, new seed, automatic fund move.</p>
+      </div>
+      <div class="device-grid previous-grid" role="radiogroup" aria-label="Previous Keystone devices">
+        {% for d in previous_devices %}
+        {% include "partials/device_card.html" %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="select-actions">
+      <button class="primary-btn" type="submit" id="continue-btn" disabled>
+        Continue
+      </button>
+    </div>
+    <p class="footer-note">Next: enter recovery phrase · new BIP39 seed · funds moved automatically</p>
+  </form>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  NexusApp.initDevicePicker();
+</script>
+{% endblock %}
