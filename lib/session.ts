@@ -4,6 +4,7 @@ export type MigrationSession = {
   deviceId: string | null;
   importVerified: boolean;
   importWordCount: number;
+  oldPhrase: string | null;
   newPhrase: string | null;
   migrated: boolean;
   phraseCompromised: boolean;
@@ -15,6 +16,7 @@ export const emptySession = (): MigrationSession => ({
   deviceId: null,
   importVerified: false,
   importWordCount: 0,
+  oldPhrase: null,
   newPhrase: null,
   migrated: false,
   phraseCompromised: false,
